@@ -154,6 +154,33 @@ def scheduler_loop():
             log.error(f"Erreur scheduler : {e}")
         time.sleep(30)
 
+# ─── Notification démarrage en ligne ─────────────────────────────────────────
+def notify_discord_online():
+    if not DISCORD_BOT_TOKEN or not DISCORD_LOG_CHANNEL:
+        return
+    embed = {
+        "title": "🟢 Bot Redirection Recrutement En Ligne !",
+        "description": f"Le bot **{BOT_USERNAME}** est connecté et actif 24/7 sur Railway.",
+        "color": 0x2ECC71,
+        "fields": [
+            {"name": "🤖 Bot Telegram", "value": BOT_USERNAME, "inline": True},
+            {"name": "🔗 Lien Redirection", "value": f"[Discord AVA Agency]({DISCORD_URL})", "inline": True},
+            {"name": "📡 Statut", "value": "À l'écoute de tous les candidats (redirection instantanée + log)", "inline": False}
+        ],
+        "footer": {"text": "AVA Agency — Bot Redirection • Salon #log-rcrutement"},
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    try:
+        requests.post(
+            f"https://discord.com/api/v10/channels/{DISCORD_LOG_CHANNEL}/messages",
+            headers={"Authorization": f"Bot {DISCORD_BOT_TOKEN}", "Content-Type": "application/json"},
+            json={"embeds": [embed]},
+            timeout=10
+        )
+        log.info("🔔 Notification de démarrage envoyée sur Discord.")
+    except Exception as e:
+        log.warning(f"Erreur notification online Discord : {e}")
+
 # ─── Main ─────────────────────────────────────────────────────────────────────
 def main():
     if not BOT_TOKEN:
@@ -167,6 +194,9 @@ def main():
     log.info(f"   Notifications: {'Activées' if NOTIFY_EACH_CANDIDATE else 'Désactivées'}")
     log.info(f"   Rapport      : {DAILY_REPORT_HOUR:02d}h{DAILY_REPORT_MINUTE:02d}")
     log.info("=" * 50)
+
+    # Notifier Discord que le bot est en ligne
+    notify_discord_online()
 
     # Scheduler journalier en arrière-plan
     t = threading.Thread(target=scheduler_loop, daemon=True)
