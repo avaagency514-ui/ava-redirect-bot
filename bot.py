@@ -38,7 +38,7 @@ sys.excepthook = handle_exception
 # ─── Configuration depuis variables d'environnement ───────────────────────────
 BOT_TOKEN             = os.environ.get("BOT_TOKEN", "")
 BOT_USERNAME          = os.environ.get("BOT_USERNAME", "@rcruting_bot")
-DISCORD_URL           = os.environ.get("DISCORD_URL", "https://discord.gg/QxePAQwB3")
+DISCORD_URL           = os.environ.get("DISCORD_URL", "https://discord.gg/k6uufmgRx")
 BUTTON_TEXT           = os.environ.get("BUTTON_TEXT", "👉 Rejoindre le QG Discord (Entretien)")
 DISCORD_BOT_TOKEN     = os.environ.get("DISCORD_BOT_TOKEN", "")
 DISCORD_LOG_CHANNEL   = os.environ.get("DISCORD_LOG_CHANNEL_ID", "")
