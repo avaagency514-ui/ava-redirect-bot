@@ -77,15 +77,16 @@ def notify_discord(user, message_text: str):
 
     embed = {
         "title": "🎯 Nouveau Candidat — Telegram",
-        "description": f"Un candidat vient d'écrire à **{BOT_USERNAME}** et a reçu la redirection Discord.",
+        "description": f"Un candidat vient de contacter **{BOT_USERNAME}** et a reçu le lien d'invitation Discord.",
         "color": 0x2ECC71,
         "fields": [
-            {"name": "👤 Nom", "value": full_name, "inline": True},
-            {"name": "🔗 Username", "value": f"[{username_str}]({profile_url})" if profile_url else username_str, "inline": True},
+            {"name": "👤 Nom / Prénom", "value": full_name, "inline": True},
+            {"name": "🔗 Profil Telegram", "value": f"[{username_str}]({profile_url})" if profile_url else username_str, "inline": True},
             {"name": "🆔 ID Telegram", "value": f"`{user.id}`", "inline": True},
-            {"name": "💬 Message reçu", "value": f"```{str(message_text)[:900]}```" if message_text else "*Aucun texte*", "inline": False}
+            {"name": "💬 Message du candidat", "value": f"```{str(message_text)[:900]}```" if message_text else "*A cliqué sur Démarrer*", "inline": False},
+            {"name": "🚀 Redirection envoyée", "value": f"[👉 Cliquer pour voir l'invitation]({DISCORD_URL})", "inline": False}
         ],
-        "footer": {"text": "AVA Agency — Bot Redirection Recrutement"},
+        "footer": {"text": "AVA Agency — Bot Redirection Recrutement • Salon #log-rcrutement"},
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
 
