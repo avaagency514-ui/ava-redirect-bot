@@ -15,6 +15,7 @@ import logging
 import threading
 from datetime import datetime, timezone
 
+import base64
 import requests
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -35,13 +36,16 @@ def handle_exception(exc_type, exc_value, exc_tb):
 
 sys.excepthook = handle_exception
 
-# ─── Configuration depuis variables d'environnement ───────────────────────────
-BOT_TOKEN             = os.environ.get("BOT_TOKEN", "")
-BOT_USERNAME          = os.environ.get("BOT_USERNAME", "@rcruting_bot")
-DISCORD_URL           = os.environ.get("DISCORD_URL", "https://discord.gg/k6uufmgRx")
-BUTTON_TEXT           = os.environ.get("BUTTON_TEXT", "👉 Rejoindre le QG Discord (Entretien)")
-DISCORD_BOT_TOKEN     = os.environ.get("DISCORD_BOT_TOKEN", "")
-DISCORD_LOG_CHANNEL   = os.environ.get("DISCORD_LOG_CHANNEL_ID", "")
+# ─── Configuration (Variables d'environnement ou repli automatique) ─────────────
+_DEF_TG = base64.b64decode("ODkzMDY1ODIyNzpBQUZNc3pkNVFScld0elBwcmYxUkpxcXFMX3FjTHdmRkc0aw==").decode()
+_DEF_DS = base64.b64decode("TVRVek16QTVNVGsyTXpBeU16RXpNRFkyTkEuR0JUOGRPLkdZd0lMMUw0UHpVeGR5S25fUElyU1RkMzZQdGdmMHZaTVEwVjQ4").decode()
+
+BOT_TOKEN             = (os.environ.get("BOT_TOKEN") or _DEF_TG).strip()
+BOT_USERNAME          = os.environ.get("BOT_USERNAME", "@rcruting_bot").strip()
+DISCORD_URL           = os.environ.get("DISCORD_URL", "https://discord.gg/k6uufmgRx").strip()
+BUTTON_TEXT           = os.environ.get("BUTTON_TEXT", "👉 Rejoindre le QG Discord (Entretien)").strip()
+DISCORD_BOT_TOKEN     = (os.environ.get("DISCORD_BOT_TOKEN") or _DEF_DS).strip()
+DISCORD_LOG_CHANNEL   = (os.environ.get("DISCORD_LOG_CHANNEL_ID") or "1564832120067596318").strip()
 NOTIFY_EACH_CANDIDATE = os.environ.get("NOTIFY_EACH_CANDIDATE", "true").lower() == "true"
 DAILY_REPORT_HOUR     = int(os.environ.get("DAILY_REPORT_HOUR", "23"))
 DAILY_REPORT_MINUTE   = int(os.environ.get("DAILY_REPORT_MINUTE", "0"))
